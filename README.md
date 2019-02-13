@@ -1,4 +1,4 @@
-# openfoam6-intelmpi Dockerfile
+# openfoam6-paraview54-intelmpi Dockerfile
 
 Docker image to run [OpenFOAM 6](https://openfoam.org) and [ParaView 5.4](https://www.paraview.org) built from source with [Intel MPI 5.1](https://software.intel.com/en-us/mpi-library) for use with [Batch Shipyard](https://github.com/Azure/batch-shipyard) on Azure Batch.
 
