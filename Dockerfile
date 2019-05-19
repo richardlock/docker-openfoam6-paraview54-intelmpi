@@ -1,4 +1,4 @@
-# Dockerfile for OpenFOAM 6 and ParaView 5.4 with Intel MPI 5.1 on CentOS 7 for use with Batch Shipyard on Azure Batch.
+# Dockerfile for OpenFOAM 6 and ParaView 5.4 with Intel MPI Library 5.1 on CentOS 7.6 for use with Batch Shipyard on Azure Batch.
 # Based on https://github.com/Azure/batch-shipyard/blob/master/recipes/OpenFOAM-Infiniband-IntelMPI/docker/Dockerfile
 
 FROM centos:7.6.1810 AS build
@@ -39,7 +39,7 @@ RUN alternatives --install /usr/local/bin/cmake cmake /usr/bin/cmake3 10 \
     --slave /usr/local/bin/ccmake ccmake /usr/bin/ccmake3 \
     --family cmake
 
-# Install Intel MPI 5.1
+# Download and install Intel MPI Library 5.1
 ADD http://registrationcenter-download.intel.com/akdlm/irc_nas/tec/9278/l_mpi_p_5.1.3.223.tgz /tmp/
 WORKDIR /tmp
 RUN tar zxvf l_mpi_p_5.1.3.223.tgz \
@@ -111,7 +111,7 @@ RUN yum swap -y fakesystemd systemd \
     && chmod 700 /root/.ssh \
     && cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
 
-# Copy OpenFOAM and Intel MPI from /opt in build image
+# Copy OpenFOAM and Intel MPI Library from /opt in build image
 COPY --from=build /opt /opt
 
 # Setup sshd on port 23
