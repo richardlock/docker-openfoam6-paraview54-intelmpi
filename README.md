@@ -15,13 +15,6 @@ Or build image from source:
     git clone https://github.com/richardlock/docker-openfoam6-paraview54-intelmpi.git
     cd docker-openfoam6-paraview54-intelmpi
     docker build -t richardlock/openfoam6-paraview54-intelmpi .
-
-Flatten image to reduce size:
-
-    docker run -it richardlock/openfoam6-paraview54-intelmpi /bin/bash
-    exit
-    docker ps -a | grep richardlock/openfoam6-paraview54-intelmpi
-    docker export <CONTAINER ID> | docker import - richardlock/openfoam6-paraview54-intelmpi:latest
     docker login -u <username>
     docker push richardlock/openfoam6-paraview54-intelmpi:latest
 
