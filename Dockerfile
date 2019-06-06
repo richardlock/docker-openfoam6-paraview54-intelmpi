@@ -89,37 +89,13 @@ RUN curl -L http://dl.openfoam.org/source/6 | tar xvz && \
         /opt/OpenFOAM/ThirdParty-6/qt-*
 
 # Multi-stage build to reduce final image size
-FROM centos:7.4.1708
+FROM alfpark/openfoam:4.0-icc-intelmpi
 LABEL maintainer="Richard Lock <https://github.com/richardlock>"
 
 # Set MPI_ROOT environment variable
 ENV MPI_ROOT=/opt/intel/compilers_and_libraries/linux/mpi
 
-# Install packages and configure ssh
-COPY ssh_config /root/.ssh/config
-RUN yum swap -y fakesystemd systemd && \
-    yum install -y \
-        dapl \
-        libibverbs \
-        libmlx4 \
-        librdmacm \
-        net-tools \
-        openssh-clients \
-        openssh-server \
-        rdma && \
-    yum clean all && \
-    mkdir -p /var/run/sshd && \
-    ssh-keygen -A && \
-    sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config && \
-    sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/g' /etc/ssh/sshd_config && \
-    sed -i 's/#RSAAuthentication yes/RSAAuthentication yes/g' /etc/ssh/sshd_config && \
-    sed -i 's/#PubkeyAuthentication yes/PubkeyAuthentication yes/g' /etc/ssh/sshd_config && \
-    ssh-keygen -f /root/.ssh/id_rsa -t rsa -N '' && \
-    chmod 600 /root/.ssh/config && \
-    chmod 700 /root/.ssh && \
-    cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
-
-# Copy OpenFOAM and Intel MPI Library from /opt in build image
+# Copy OpenFOAM and Intel MPI from build /opt
 COPY --from=build /opt /opt
 
 # Setup sshd on port 23
